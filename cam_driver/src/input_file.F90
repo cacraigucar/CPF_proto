@@ -25,6 +25,8 @@ module input_file
      real, allocatable :: hybm(:)
      real, allocatable :: hyai(:)
      real, allocatable :: hybi(:)
+     real, allocatable :: zi(:)
+     real, allocatable :: lnpint(:)
 
      integer :: nlons
      integer :: nlats
@@ -45,6 +47,8 @@ module input_file
      procedure :: get_hybm=>input_file_get_hybm
      procedure :: get_hyai=>input_file_get_hyai
      procedure :: get_hybi=>input_file_get_hybi
+     procedure :: get_zi=>input_file_get_zi
+     procedure :: get_lnpint=>input_file_get_lnpint
      procedure :: get_units=>input_file_get_units
   end type input_file_type
 
@@ -66,6 +70,16 @@ contains
     real :: x(this%nlevs+1)
     x(:) = this%hyai(:)
   end function input_file_get_hyai
+  function input_file_get_zi(this) result(x)
+    class(input_file_type), intent(in) :: this
+    real :: x(this%nlevs+1)
+    x(:) = this%zi(:)
+  end function input_file_get_zi
+  function input_file_get_lnpint(this) result(x)
+    class(input_file_type), intent(in) :: this
+    real :: x(this%nlevs+1)
+    x(:) = this%lnpint(:)
+  end function input_file_get_lnpint
   function input_file_get_hybi(this) result(x)
     class(input_file_type), intent(in) :: this
     real :: x(this%nlevs+1)

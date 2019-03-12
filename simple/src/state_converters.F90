@@ -699,6 +699,7 @@ CONTAINS
   errflg = 0
 
   h2o_mole(:,:) = spec_hum(:,:)
+  write(0,*) 'WARNING---specific_humidity_to_mole_fraction_run is NOT doing a conversion'
 
   end subroutine specific_humidity_to_mole_fraction_run
 
@@ -759,6 +760,7 @@ CONTAINS
   errflg = 0
 
   rel_hum(:,:) = spec_hum(:,:)
+  write(0,*) 'WARNING---specific_to_relative_humidity_run is NOT doing a conversion'
 
   end subroutine specific_to_relative_humidity_run
 

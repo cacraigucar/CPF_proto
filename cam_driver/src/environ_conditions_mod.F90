@@ -20,6 +20,7 @@ module environ_conditions_mod
    contains
      procedure :: getvar => environ_conditions_getvar
      procedure :: getcol => environ_conditions_getcol
+     procedure :: getlatcol => environ_conditions_getlatcol
      procedure :: getsrf => environ_conditions_getsrf
      procedure :: press_mid => environ_conditions_press_mid
      procedure :: press_int => environ_conditions_press_int
@@ -40,7 +41,8 @@ contains
     use input_file, only: MAX_ATT_LEN
     
     character(len=*), intent(in) :: infilepath
-    real, intent(in) ::  lat, lon
+    real, intent(in), optional ::  lat
+    real, intent(in), optional ::  lon
     real, intent(in), optional :: lev
     
     type(environ_conditions), pointer :: env_cond
@@ -49,10 +51,34 @@ contains
     allocate(env_cond)
     
     call env_cond%inputfile%open( infilepath )
-    if (present(lev)) then
-       env_cond%slice = env_cond%inputfile%set_slice( beglat=lat,endlat=lat, beglon=lon,endlon=lon, beglev=lev,endlev=lev)
-    else
-       env_cond%slice = env_cond%inputfile%set_slice( beglat=lat,endlat=lat, beglon=lon,endlon=lon )
+    if (present(lat)) then
+       if (present(lon)) then
+          if (present(lev)) then
+             env_cond%slice = env_cond%inputfile%set_slice( beglat=lat,endlat=lat, beglon=lon,endlon=lon, beglev=lev,endlev=lev)
+          else
+             env_cond%slice = env_cond%inputfile%set_slice( beglat=lat,endlat=lat, beglon=lon,endlon=lon )
+          endif
+       else
+          if (present(lev)) then
+             env_cond%slice = env_cond%inputfile%set_slice( beglat=lat,endlat=lat,  beglev=lev,endlev=lev)
+          else
+             env_cond%slice = env_cond%inputfile%set_slice( beglat=lat,endlat=lat )
+          endif
+       endif
+     else
+       if (present(lon)) then
+          if (present(lev)) then
+             env_cond%slice = env_cond%inputfile%set_slice( beglon=lon,endlon=lon, beglev=lev,endlev=lev)
+          else
+             env_cond%slice = env_cond%inputfile%set_slice( beglon=lon,endlon=lon )
+          endif
+       else
+          if (present(lev)) then
+             env_cond%slice = env_cond%inputfile%set_slice( beglev=lev,endlev=lev)
+          else
+             env_cond%slice = env_cond%inputfile%set_slice(  )
+          endif
+       endif
     end if
      
     env_cond%slice%ntimes = 1
@@ -126,6 +152,23 @@ contains
 
   end function environ_conditions_getvar
   
+  function environ_conditions_getlatcol(this, var, nlat, nlev) result(thelatcol)
+    class(environ_conditions), intent(inout) :: this
+    character(len=*), intent(in) :: var
+    integer,intent(in) :: nlat,nlev
+    real(rk) :: thelatcol(nlat,nlev)
+
+    real(rk), pointer :: data(:,:,:,:)
+    
+    data => this%inputfile%extract(var, this%slice )
+    if (this%slice%ntimes == 2) then
+       thelatcol(1:nlat, 1:nlev) = this%wghts(1)*data(1,1:nlat,1:nlev,1) + this%wghts(2)*data(1,1:nlat,1:nlev,2)
+    else
+       thelatcol(1:nlat, 1:nlev) = data(1,1:nlat,1:nlev,1)
+    end if
+
+  end function environ_conditions_getlatcol
+
   function environ_conditions_getcol(this, var, nlev) result(thecol)
     class(environ_conditions), intent(inout) :: this
     character(len=*), intent(in) :: var
