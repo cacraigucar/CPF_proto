@@ -11,12 +11,14 @@ MODULE make_ddt
   PUBLIC :: make_ddt_init
   PUBLIC :: make_ddt_run
   PUBLIC :: make_ddt_finalize
-  PUBLIC :: time_and_temp_type
+  PUBLIC :: vmr_type
   
-  type time_and_temp_type
-   real(kind_phys)  :: timestep
-   REAL(kind_phys)  :: temp_layer(ncol, lev)
-   REAL(kind_phys)  :: temp_level(ncol, ilev)
+!> \section arg_table_vmr_type  Argument Table
+!! \htmlinclude arg_table_vmr_type.html
+!!
+  type vmr_type
+   integer :: nvmr
+   real(kind_phys), allocatable :: vmr_array(:,:)
   end type
     
 
@@ -25,30 +27,32 @@ CONTAINS
 !> \section arg_table_make_ddt_run  Argument Table
 !! \htmlinclude arg_table_make_ddt_run.html
 !!
-  SUBROUTINE make_ddt_run(ncol, lev, ilev, time_and_temp, timestep, temp_level,          &
-       temp_layer, errmsg, errflg)
+  SUBROUTINE make_ddt_run(nbox, nlev, O3, HNO3, vmr,        &
+       errmsg, errflg)
 !----------------------------------------------------------------
    IMPLICIT NONE
 !----------------------------------------------------------------
 
-   integer,            intent(in)    :: ncol, lev, ilev
-   type(time_and_temp_type) , intent(inout) :: time_and_temp
-   REAL(kind_phys),    intent(inout) :: temp_level(ncol, ilev)
-   real(kind_phys),    intent(in)    :: timestep
-   REAL(kind_phys),    INTENT(out)   :: temp_layer(ncol, lev)
+   integer,            intent(in)    :: nbox, nlev
+   REAL(kind_phys),    intent(in)    :: O3(nbox,nlev)
+   REAL(kind_phys),    intent(in)    :: HNO3(nbox,nlev)
+   type(vmr_type),     intent(out)   :: vmr
    character(len=512), intent(out)   :: errmsg
    integer,            intent(out)   :: errflg
 !----------------------------------------------------------------
 
-   integer :: col_index
-   integer :: lev_index
-
     errmsg = ''
     errflg = 0
  
-    time_and_temp%temp_level(:,:) = temp_level(:,:)
-    time_and_temp%timestep = timestep
-    time_and_temp%temp_layer = 0._kind_phys
+    vmr%ncnst =  2
+
+    allocate vmr%vmr_array(ncol,nlev,vmr%ncnst)
+
+    ! NOTE -- This is prototyping one approach to passing a large number of
+    ! chemical VMR values and is the predecssor for adding in methods and maybe
+    ! nesting DDTs (especially for aerosols)
+    vmr%vmr_array(:,:,1) = O3(:,:)
+    vmr%vmr_array(:,:,2) = HNO3(:,:)
 
   END SUBROUTINE make_ddt_run
 

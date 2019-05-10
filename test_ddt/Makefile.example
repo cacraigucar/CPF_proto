@@ -10,12 +10,13 @@ MKFILE_PATH := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 ROOT = ../../ccpp-framework
 CAPGEN := $(ROOT)/scripts/ccpp_capgen.py
 CAPGEN_ARGS := --host-files $(MKFILE_PATH)/hello_world_host.meta,$(MKFILE_PATH)/hello_world_mod.meta
-CAPGEN_ARGS += --scheme-files $(MKFILE_PATH)/make_ddt.meta,$(MKFILE_PATH)/hello_scheme.meta,$(MKFILE_PATH)/temp_adjust.meta
+CAPGEN_ARGS += --scheme-files $(MKFILE_PATH)/get_environ_cond.meta,$(MKFILE_PATH)/make_ddt.meta,$(MKFILE_PATH)/hello_scheme.meta,$(MKFILE_PATH)/temp_adjust.meta
 CAPGEN_ARGS += --suites $(MKFILE_PATH)/hello_world_suite.xml
 CAPGEN_ARGS += --generate-host-cap --host-name HelloWorld
 #CAPGEN_ARGS += --verbose --verbose
 SRCS_META := $(MKFILE_PATH)/hello_world_host.meta
 SRCS_META += $(MKFILE_PATH)/hello_world_mod.meta
+SRCS_META += $(MKFILE_PATH)/get_environ_cond.meta
 SRCS_META += $(MKFILE_PATH)/make_ddt.meta
 SRCS_META += $(MKFILE_PATH)/hello_scheme.meta
 SRCS_META += $(MKFILE_PATH)/temp_adjust.meta
@@ -27,10 +28,11 @@ FCFLAGS += -g
 
 # SOURCE FILES
 SRCS_F90 = $(MKFILE_PATH)/hello_scheme.F90 $(MKFILE_PATH)/hello_world_host.F90
+SRCS_F90 += $(MKFILE_PATH)/get_environ_cond.F90
 SRCS_F90 += $(MKFILE_PATH)/make_ddt.F90
 SRCS_F90 += $(MKFILE_PATH)/hello_world_mod.F90
 SRCS_F90 += $(MKFILE_PATH)/temp_adjust.F90
-OBJS_F90 = make_ddt.o hello_scheme.o temp_adjust.o hello_world_mod.o hello_world_host.o
+OBJS_F90 = get_environ_cond.o make_ddt.o hello_scheme.o temp_adjust.o hello_world_mod.o hello_world_host.o
 
 # Do we have generated CAP files?
 $(eval CAPOBJS=$(shell if [ -f caplocal.txt ]; then cat caplocal.txt; fi))
@@ -50,6 +52,9 @@ capobjs: capfiles.txt
 # Human written
 HelloWorld: capobjs $(CAPOBJS) $(OBJS_F90)
 	$(FC) $(FCFLAGS) -o $@ $(CAPOBJS) $(OBJS_F90)
+
+get_environ_cond.o: ccpp_kinds.o $(MKFILE_PATH)/get_environ_cond.F90
+	$(FC) -c $(INCPATH) $(FCFLAGS) $(MKFILE_PATH)/get_environ_cond.F90
 
 make_ddt.o: ccpp_kinds.o $(MKFILE_PATH)/make_ddt.F90
 	$(FC) -c $(INCPATH) $(FCFLAGS) $(MKFILE_PATH)/make_ddt.F90
