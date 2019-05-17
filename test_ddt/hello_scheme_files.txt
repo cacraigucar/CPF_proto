@@ -5,3 +5,4 @@ make_ddt.meta
 kinetics_solve.meta
 get_environ_cond.meta
 finish_ddt.meta
+kinetics_sub.F90

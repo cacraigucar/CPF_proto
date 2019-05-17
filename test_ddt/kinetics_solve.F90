@@ -21,6 +21,9 @@ CONTAINS
 !!
   SUBROUTINE kinetics_solve_run(nbox, nlev,  vmr,        &
        errmsg, errflg)
+
+  use kinetics_sub, only: factor
+
 !----------------------------------------------------------------
    IMPLICIT NONE
 !----------------------------------------------------------------
@@ -43,7 +46,8 @@ CONTAINS
     ! nesting DDTs (especially for aerosols)
     
     do i = 1,vmr%nvmr
-      vmr%vmr_array(:,:,i) = vmr%vmr_array(:,:,i)/2.0_kind_phys
+!      vmr%vmr_array(:,:,i) = vmr%vmr_array(:,:,i)/2.0_kind_phys
+      vmr%vmr_array(:,:,i) = vmr%vmr_array(:,:,i)/factor
     end do
 
   END SUBROUTINE kinetics_solve_run
