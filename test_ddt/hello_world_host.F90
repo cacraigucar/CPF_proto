@@ -33,16 +33,17 @@ CONTAINS
 
     ! Initialize our 'data'
     call init_temp()
+  
 
     ! Use the suite information to setup the run
-    call HelloWorld_ccpp_physics_initialize('hello_world_suite', errmsg, errflg)
+    call HelloWorld_ccpp_physics_initialize('hello_world_suite',  errmsg, errflg)
     if (errflg /= 0) then
       write(6, *) trim(errmsg)
       stop
     end if
 
     ! Initialize the timestep
-    call HelloWorld_ccpp_physics_timestep_initial('hello_world_suite', errmsg, errflg)
+    call HelloWorld_ccpp_physics_timestep_initial('hello_world_suite',  errmsg, errflg)
     if (errflg /= 0) then
       write(6, *) trim(errmsg)
       stop
@@ -51,7 +52,7 @@ CONTAINS
     do col_start = 1, ncols, 5
       col_end = MIN(col_start + 4, ncols)
 
-      call HelloWorld_ccpp_physics_run('hello_world_suite', 'physics', col_start, col_end, errmsg, errflg)
+      call HelloWorld_ccpp_physics_run('hello_world_suite', 'physics', col_start, col_end,  errmsg, errflg)
       if (errflg /= 0) then
         write(6, *) trim(errmsg)
         call ccpp_physics_suite_part_list('hello_world_suite', part_names, errmsg, errflg)

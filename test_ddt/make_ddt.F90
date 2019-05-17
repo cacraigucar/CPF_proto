@@ -18,10 +18,9 @@ MODULE make_ddt
 !!
   type vmr_type
    integer :: nvmr
-   real(kind_phys), allocatable :: vmr_array(:,:)
+   real(kind_phys), allocatable :: vmr_array(:,:,:)
   end type
     
-
 CONTAINS
 
 !> \section arg_table_make_ddt_run  Argument Table
@@ -44,13 +43,14 @@ CONTAINS
     errmsg = ''
     errflg = 0
  
-    vmr%ncnst =  2
-
-    allocate vmr%vmr_array(ncol,nlev,vmr%ncnst)
 
     ! NOTE -- This is prototyping one approach to passing a large number of
     ! chemical VMR values and is the predecssor for adding in methods and maybe
     ! nesting DDTs (especially for aerosols)
+    vmr%nvmr =  2
+    ! TEMPORARY ALLOCATe
+    allocate (vmr%vmr_array(nbox,nlev,vmr%nvmr))
+
     vmr%vmr_array(:,:,1) = O3(:,:)
     vmr%vmr_array(:,:,2) = HNO3(:,:)
 

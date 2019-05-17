@@ -4,6 +4,8 @@
   <group name="physics">
     <scheme>get_environ_cond</scheme>
     <scheme>make_ddt</scheme>
+    <scheme>kinetics_solve</scheme>
+    <scheme>finish_ddt</scheme>
     <scheme>hello_scheme</scheme>
     <scheme>temp_adjust</scheme>
   </group>

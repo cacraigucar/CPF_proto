@@ -35,27 +35,27 @@ CONTAINS
   subroutine get_environ_cond_init (nbox, nlev, O3, HNO3, errmsg, errflg)
 
    integer,            intent(in)    :: nbox, nlev
-   real(kind_phys), allocatable,   intent(out)   :: O3(:,:)
-   real(kind_phys), allocatable,   intent(out)   :: HNO3(:,:)
+   real(kind_phys),    intent(out)   :: O3(:,:)
+   real(kind_phys),    intent(out)   :: HNO3(:,:)
    character(len=512), intent(out)   :: errmsg
    integer,            intent(out)   :: errflg
 !----------------------------------------------------------------
 
+   integer :: i, j
 
     errmsg = ''
     errflg = 0
  
-    allocate (o3(nbox,nlev))
-    allocate (HNO3(nbox,nlev))
-
     ! This may be replaced with MusicBox json environmental conditions reader???
 
-    do j=1,nlevel
+    do j=1,nlev
       do i=1,nbox
          O3(i,j)   = i*1.e-6
          HNO3(i,j) = j*1000*1.e-9
       end do
     end do
+
+    write(6,*) ' O3(1,1)=',O3(1,1)
 
   end subroutine get_environ_cond_init
 

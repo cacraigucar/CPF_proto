@@ -1,2 +1,5 @@
 hello_scheme.meta
 temp_adjust.meta
+make_ddt.meta
+kinetics_solve.meta
+get_environ_cond.meta

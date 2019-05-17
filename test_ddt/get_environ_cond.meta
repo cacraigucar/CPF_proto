@@ -20,7 +20,7 @@
   name = get_environ_cond_init
   type = scheme
 [ nbox ]
-  standard_name = horizontal_loop_extent
+  standard_name = horizontal_dimension
   type = integer
   units = count
   dimensions = ()
@@ -34,14 +34,14 @@
 [ o3 ]
   standard_name = ozone
   units = ppmv
-  dimensions = (horizontal_loop_extent, vertical_level_dimension)
+  dimensions = (horizontal_dimension, vertical_level_dimension)
   type = real
   kind = kind_phys
   intent = out
 [ hno3 ]
   standard_name = nitric_acid
   units = ppmv
-  dimensions = (horizontal_loop_extent, vertical_level_dimension)
+  dimensions = (horizontal_dimension, vertical_level_dimension)
   type = real
   kind = kind_phys
   intent = out
