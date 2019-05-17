@@ -4,6 +4,7 @@
 MODULE make_ddt
 
   USE ccpp_kinds, ONLY: kind_phys
+  use vmr_ddt_mod, only: vmr_type
 
   IMPLICIT NONE
   PRIVATE
@@ -11,15 +12,7 @@ MODULE make_ddt
   PUBLIC :: make_ddt_init
   PUBLIC :: make_ddt_run
   PUBLIC :: make_ddt_finalize
-  PUBLIC :: vmr_type
   
-!> \section arg_table_vmr_type  Argument Table
-!! \htmlinclude arg_table_vmr_type.html
-!!
-  type vmr_type
-   integer :: nvmr
-   real(kind_phys), allocatable :: vmr_array(:,:,:)
-  end type
     
 CONTAINS
 

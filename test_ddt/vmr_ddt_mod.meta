@@ -1,0 +1,14 @@
+[ccpp-arg-table]
+  name = vmr_type
+  type = ddt
+[ nvmr ]
+  standard_name = number_of_chemical_species
+  units = count
+  dimensions = ()
+  type = integer
+[ vmr_array ]
+  standard_name = array_of_volume_mixing_ratios
+  units = ppmv
+  dimensions = (horizontal_loop_extent,vertical_level_dimension, number_of_chemical_species)
+  type = real
+  kind = kind_phys

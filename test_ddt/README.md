@@ -27,7 +27,7 @@ To build and run the HelloWorld example using CMake, follow these steps:
 ```
 cd <ccpp_framework>/doc/HelloWorld
 mkdir build && cd build
-cmake ../CMakeLists.txt -B . && make
+cmake3 ../CMakeLists.txt -S .. -B . && make
 ./HelloWorld
 ```
 

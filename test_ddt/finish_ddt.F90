@@ -4,7 +4,7 @@
 MODULE finish_ddt
 
   USE ccpp_kinds, ONLY: kind_phys
-  use make_ddt,   only: vmr_type
+  use vmr_ddt_mod,   only: vmr_type
 
   IMPLICIT NONE
   PRIVATE

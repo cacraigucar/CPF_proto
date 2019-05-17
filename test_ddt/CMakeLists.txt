@@ -27,7 +27,7 @@ SET(HOST_PROGRAM "hello_world_host")
 #
 #-----------------------------------------------------------------------------
 get_filename_component(HELLO_ROOT "${CMAKE_SOURCE_DIR}" DIRECTORY)
-get_filename_component(CCPP_ROOT "${HELLO_ROOT}" DIRECTORY)
+set(CCPP_ROOT "${HELLO_ROOT}/ccpp-framework")
 
 #-----------------------------------------------------------------------------
 ##############################################################################
