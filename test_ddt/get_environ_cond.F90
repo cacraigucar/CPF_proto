@@ -51,7 +51,7 @@ CONTAINS
     do j=1,nlev
       do i=1,nbox
          O3(i,j)   = i*1.e-6
-         HNO3(i,j) = j*1000*1.e-9
+         HNO3(i,j) = j*2000*1.e-9
       end do
     end do
 

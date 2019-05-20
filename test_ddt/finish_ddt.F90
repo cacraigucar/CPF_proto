@@ -32,6 +32,8 @@ CONTAINS
    integer,            intent(out)   :: errflg
 !----------------------------------------------------------------
 
+   REAL(kind_phys)   :: sum_result(nbox,nlev)
+    
     errmsg = ''
     errflg = 0
  
@@ -43,6 +45,10 @@ CONTAINS
     HNO3(:,:) = vmr%vmr_array(:,:,2)
 
     write(6,*) 'in finish O3(1,1)=',O3(1,1),O3(1,1)*2._kind_phys
+    write(6,*) 'in finish HNO3(1,1)=',HNO3(1,1),HNO3(1,1)*2._kind_phys
+
+    call vmr%sum(sum_result)
+    write(6,*) 'sum_result(1,1)=',sum_result(1,1)
 
   END SUBROUTINE finish_ddt_run
 
