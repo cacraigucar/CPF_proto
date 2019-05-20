@@ -18,10 +18,11 @@ MODULE vmr_ddt_mod
   end type
 
 contains
-   subroutine sum_vmr_array(this, result)
+   subroutine sum_vmr_array(this, temp, result)
       implicit none
  
       class(vmr_type) :: this
+      real(kind_phys) :: temp (:,:)
       real(kind_phys) :: result (:,:)  
   
       integer :: ivmr
@@ -29,7 +30,7 @@ contains
       result = 0._kind_phys
 
       do ivmr = 1, this%nvmr
-        result(:,:) = this%vmr_array(:,:,ivmr) + result(:,:)
+        result(:,:) = this%vmr_array(:,:,ivmr) + result(:,:) + temp(:,:)
       end do
        
    end subroutine sum_vmr_array

@@ -18,7 +18,7 @@ CONTAINS
 !> \section arg_table_finish_ddt_run  Argument Table
 !! \htmlinclude arg_table_finish_ddt_run.html
 !!
-  SUBROUTINE finish_ddt_run(nbox, nlev, vmr, O3, HNO3,        &
+  SUBROUTINE finish_ddt_run(nbox, nlev, vmr, temp_constant, O3, HNO3,        &
        errmsg, errflg)
 !----------------------------------------------------------------
    IMPLICIT NONE
@@ -26,6 +26,7 @@ CONTAINS
 
    integer,            intent(in)    :: nbox, nlev
    type(vmr_type),     intent(in)    :: vmr
+   real(kind_phys),    intent(in)    :: temp_constant(nbox,nlev)
    REAL(kind_phys),    intent(out)   :: O3(nbox,nlev)
    REAL(kind_phys),    intent(out)   :: HNO3(nbox,nlev)
    character(len=512), intent(out)   :: errmsg
@@ -46,8 +47,9 @@ CONTAINS
 
     write(6,*) 'in finish O3(1,1)=',O3(1,1),O3(1,1)*2._kind_phys
     write(6,*) 'in finish HNO3(1,1)=',HNO3(1,1),HNO3(1,1)*2._kind_phys
+    write(6,*) 'in finish temp_constant(1,1) =', temp_constant(1,1)
 
-    call vmr%sum(sum_result)
+    call vmr%sum(temp_constant, sum_result)
     write(6,*) 'sum_result(1,1)=',sum_result(1,1)
 
   END SUBROUTINE finish_ddt_run

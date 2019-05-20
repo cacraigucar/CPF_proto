@@ -45,6 +45,13 @@
   type = real
   kind = kind_phys
   intent = out
+[ temp_constant ]
+  standard_name = constant_temperature
+  units = K
+  dimensions = (horizontal_dimension, vertical_level_dimension)
+  type = real
+  kind = kind_phys
+  intent = out
 [ errmsg ]
   standard_name = ccpp_error_message
   long_name = Error message for error handling in CCPP

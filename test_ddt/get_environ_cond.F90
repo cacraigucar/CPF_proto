@@ -32,11 +32,12 @@ CONTAINS
 !> \section arg_table_get_environ_cond_init  Argument Table
 !! \htmlinclude arg_table_get_environ_cond_init.html
 !!
-  subroutine get_environ_cond_init (nbox, nlev, O3, HNO3, errmsg, errflg)
+  subroutine get_environ_cond_init (nbox, nlev, O3, HNO3, temp_constant, errmsg, errflg)
 
    integer,            intent(in)    :: nbox, nlev
    real(kind_phys),    intent(out)   :: O3(:,:)
    real(kind_phys),    intent(out)   :: HNO3(:,:)
+   real(kind_phys),    intent(out)   :: temp_constant(:,:)
    character(len=512), intent(out)   :: errmsg
    integer,            intent(out)   :: errflg
 !----------------------------------------------------------------
@@ -54,6 +55,8 @@ CONTAINS
          HNO3(i,j) = j*2000*1.e-9
       end do
     end do
+
+    temp_constant = 250._kind_phys
 
     write(6,*) ' O3(1,1)=',O3(1,1)
 
