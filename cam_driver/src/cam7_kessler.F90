@@ -63,6 +63,7 @@ contains
 
     ! loop over all time steps
     nstep=0
+    open (60, file='fort.60')
     do j = 1, ntimes
 
        ncol = pcols

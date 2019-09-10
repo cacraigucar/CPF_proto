@@ -7,9 +7,9 @@ via the manage_externals tool
 
 ## Obtaining Code
 
-  git clone -b cac_kessler https://github.com/cacraigucar/CPF_proto.git
+  git clone -b new_cam_kessler https://github.com/cacraigucar/CPF_proto.git
      -- or --
-  git clone -b cac_kessler_nottested https://github.com/cacraigucar/CPF_proto.git
+  git clone -b new_cam_kessler_nottested https://github.com/cacraigucar/CPF_proto.git
 
 # Below, the clone directory is referred to as <CPF_proto>
 
