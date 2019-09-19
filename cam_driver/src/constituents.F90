@@ -1,5 +1,9 @@
 module constituents
 
+!> \section arg_table_constituents
+!! \htmlinclude constituents.html
+!!
+
    implicit none
    public
 

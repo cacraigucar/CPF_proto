@@ -3,7 +3,9 @@
 !-------------------------------------------------------------------------------
 module physics_types
 
-   use physconst,    only: r8
+!    use physconst,    only: kind_phys
+   use machine, only: kind_phys
+
    use constituents, only: pcnst
 
    implicit none
@@ -33,280 +35,15 @@ module physics_types
    private endrun
 
 !==============================================================================
-!! \section arg_table_physics_state
-!! [ lat ]
-!!   standard_name = latitude
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = radians
-!!   dimensions = (horizontal_dimension)
-!! [ lon ]
-!!   standard_name = longitude
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = radians
-!!   dimensions = (horizontal_dimension)
-!! [ ps ]
-!!   standard_name = surface_air_pressure
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension)
-!! [ psdry ]
-!!   standard_name = dry_surface_pressure
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension)
-!! [ phis ]
-!!   standard_name = surface_geopotential
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = m2 s-2
-!!   dimensions = (horizontal_dimension)
-!! [ ulat ]
-!!   standard_name = unique_latitudes
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = radians
-!!   dimensions = (horizontal_dimension)
-!! [ ulon ]
-!!   standard_name = unique_longitudes
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = radians
-!!   dimensions = (horizontal_dimension)
-!! [ t ]
-!!   standard_name = temperature
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = K
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ u ]
-!!   standard_name = eastward_wind
-!!   long_name = Zonal wind
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = m s-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ v ]
-!!   standard_name = northward_wind
-!!   long_name = Meridional wind
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = m s-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ s ]
-!!   standard_name = dry_static_energy_content_of_atmosphere_layer
-!!   long_name = Dry static energy
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = J m-2
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ omega ]
-!!   standard_name = lagrangian_tendency_of_air_pressure
-!!   long_name = Vertical pressure velocity
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa s-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ pmid ]
-!!   standard_name = air_pressure
-!!   long_name = Midpoint air pressure
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ pmiddry ]
-!!   standard_name = air_pressure_of_dry_air
-!!   long_name = Dry midpoint pressure
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ pdel ]
-!!   standard_name = pressure_thickness
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ pdeldry ]
-!!   standard_name = pressure_thickness_of_dry_air
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ rpdel ]
-!!   standard_name = reciprocal_of_pressure_thickness
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ rpdeldry ]
-!!   standard_name = reciprocal_of_pressure_thickness_of_dry_air
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ lnpmid ]
-!!   standard_name = natural_log_of_air_pressure
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = pmid
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ lnpmiddry ]
-!!   standard_name = log_of_air_pressure_of_dry_air
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ exner ]
-!!   standard_name = inverse_exner_function_wrt_surface_pressure
-!!   long_name = inverse exner function w.r.t. surface pressure, (ps/p)^(R/cp)
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = 1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ zm ]
-!!   standard_name = geopotential_height_above_surface_at_midpoints
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = m
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ q ]
-!!   standard_name = constituent_mixing_ratio
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = kg/kg moist or dry air depending on type
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension, number_of_tracers)
-!! [ q(:,:,index_of_water_vapor_specific_humidity) ]
-!!   standard_name = water_vapor_specific_humidity
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = kg kg-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ q(:,:,index_of_cloud_liquid_water_mixing_ratio) ]
-!!   standard_name = cloud_liquid_water_mixing_ratio
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = kg kg-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ q(:,:,index_of_rain_water_mixing_ratio) ]
-!!   standard_name = rain_water_mixing_ratio
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = kg kg-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ pint ]
-!!   standard_name = air_pressure_at_interface
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_level_dimension)
-!! [ pintdry ]
-!!   standard_name = interface_pressure_dry
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_level_dimension)
-!! [ lnpint ]
-!!   standard_name = ln_air_pressure_at_interface
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = ln(Pa)
-!!   dimensions = (horizontal_dimension, vertical_level_dimension)
-!! [ lnpintdry ]
-!!   standard_name = ln_interface_pressure_dry
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = ln(Pa)
-!!   dimensions = (horizontal_dimension, vertical_level_dimension)
-!! [ zi ]
-!!   standard_name = geopotential_height_above_surface_at_interfaces
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = m
-!!   dimensions = (horizontal_dimension, vertical_level_dimension)
-!! [ te_ini ]
-!!   standard_name = vertically_integrated_total_kinetic_and_static_energy_of_initial_state
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = J m-2
-!!   dimensions = (horizontal_dimension)
-!! [ te_cur ]
-!!   standard_name = vertically_integrated_total_kinetic_and_static_energy_of_current_state
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = J m-2
-!!   dimensions = (horizontal_dimension)
-!! [ tw_ini ]
-!!   standard_name = vertically_integrated_total_water_of_initial_state
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa s2 m-1
-!!   dimensions = (horizontal_dimension)
-!! [ tw_cur ]
-!!   standard_name = vertically_integrated_total_water_of_new_state
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa s2 m-1
-!!   dimensions = (horizontal_dimension)
-!! [ count ]
-!!   standard_name = count_of_values_with_significant_energy_or_water_imbalances
-!!   state_variable = true
-!!   type = integer
-!!   kind = kind_phys
-!!   units = 1
-!!   dimensions = (horizontal_dimension)
-!! [ cid ]
-!!   standard_name = unique_column_id
-!!   state_variable = true
-!!   type = integer
-!!   kind = kind_phys
-!!   units = 1
-!!   dimensions = (horizontal_dimension)
-!!
+!!  \section arg_table_physics_state
+!! \htmlinclude physics_state.html
+
    type physics_state
       integer                                     :: &
            ngrdcol,              &! -- Grid        -- number of active columns (on the grid)
            psetcols=0,           &! --             -- max number of columns set - if subcols = pcols*psubcols, else = pcols
            ncol=0                 ! --             -- sum of nsubcol for all ngrdcols - number of active columns
-      real(r8), dimension(:), allocatable         :: &
+      real(kind_phys), dimension(:), allocatable         :: &
            lat,     &! latitude (radians)
            lon,     &! longitude (radians)
            ps,      &! surface pressure
@@ -314,7 +51,7 @@ module physics_types
            phis,    &! surface geopotential
            ulat,    &! unique latitudes  (radians)
            ulon      ! unique longitudes (radians)
-      real(r8), dimension(:,:),allocatable        :: &
+      real(kind_phys), dimension(:,:),allocatable        :: &
            t,       &! temperature (K)
            u,       &! zonal wind (m/s)
            v,       &! meridional wind (m/s)
@@ -331,17 +68,17 @@ module physics_types
            exner,   &! inverse exner function w.r.t. surface pressure (ps/p)^(R/cp)
            zm        ! geopotential height above surface at midpoints (m)
 
-      real(r8), dimension(:,:,:),allocatable      :: &
+      real(kind_phys), dimension(:,:,:),allocatable      :: &
            q         ! constituent mixing ratio (kg/kg moist or dry air depending on type)
 
-      real(r8), dimension(:,:),allocatable        :: &
+      real(kind_phys), dimension(:,:),allocatable        :: &
            pint,    &! interface pressure (Pa)
            pintdry, &! interface pressure dry (Pa)
            lnpint,  &! ln(pint)
            lnpintdry,&! log interface pressure dry (Pa)
            zi        ! geopotential height above surface at interfaces (m)
 
-      real(r8), dimension(:),allocatable          :: &
+      real(kind_phys), dimension(:),allocatable          :: &
            te_ini,  &! vertically integrated total (kinetic + static) energy of initial state
            te_cur,  &! vertically integrated total (kinetic + static) energy of current state
            tw_ini,  &! vertically integrated total water of initial state
@@ -356,56 +93,15 @@ module physics_types
 
 !==============================================================================
 !!  \section arg_table_physics_tend
-!! [ dtdt ]
-!!   standard_name = total_tendency_of_temperature
-!!   state_variable = false
-!!   type = real
-!!   kind = kind_phys
-!!   units = K s-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ dudt ]
-!!   standard_name = total_tendency_of_eastward_wind
-!!   state_variable = false
-!!   type = real
-!!   kind = kind_phys
-!!   units = m s-2
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ dvdt ]
-!!   standard_name = total_tendency_of_northward_wind
-!!   state_variable = false
-!!   type = real
-!!   kind = kind_phys
-!!   units = m s-2
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!! [ flx_net ]
-!!   standard_name = surface_energy_flux
-!!   state_variable = false
-!!   type = real
-!!   kind = kind_phys
-!!   units = W m-2
-!!   dimensions = (horizontal_dimension)
-!! [ te_tnd ]
-!!   standard_name = cumulative_boundary_flux_of_total_energy
-!!   state_variable = false
-!!   type = real
-!!   kind = kind_phys
-!!   units = W m-2
-!!   dimensions = (horizontal_dimension)
-!! [ tw_tnd ]
-!!   standard_name = cumulative_boundary_flux_of_total_water
-!!   state_variable = false
-!!   type = real
-!!   kind = kind_phys
-!!   units = W m-2
-!!   dimensions = (horizontal_dimension)
-!!
+!! \htmlinclude physics_tend.html
+
    type physics_tend
 
       integer   ::   psetcols=0 ! max number of columns set- if subcols = pcols*psubcols, else = pcols
 
-      real(r8), dimension(:,:),allocatable        :: dtdt, dudt, dvdt
-      real(r8), dimension(:),  allocatable        :: flx_net
-      real(r8), dimension(:),  allocatable        :: &
+      real(kind_phys), dimension(:,:),allocatable        :: dtdt, dudt, dvdt
+      real(kind_phys), dimension(:),  allocatable        :: flx_net
+      real(kind_phys), dimension(:),  allocatable        :: &
            te_tnd,  &! cumulative boundary flux of total energy
            tw_tnd    ! cumulative boundary flux of total water
    end type physics_tend
@@ -553,7 +249,7 @@ contains
 
    subroutine physics_tend_init(tend)
 
-!      use shr_kind_mod,     only: r8 => shr_kind_r8
+!      use shr_kind_mod,     only: kind_phys => shr_kind_kind_phys
 
       implicit none
 
@@ -570,12 +266,12 @@ contains
          call endrun('physics_tend_init: tend must be allocated before it can be initialized')
       end if
 
-      tend%dtdt    = 0._r8
-      tend%dudt    = 0._r8
-      tend%dvdt    = 0._r8
-      tend%flx_net = 0._r8
-      tend%te_tnd  = 0._r8
-      tend%tw_tnd  = 0._r8
+      tend%dtdt    = 0._kind_phys
+      tend%dudt    = 0._kind_phys
+      tend%dvdt    = 0._kind_phys
+      tend%flx_net = 0._kind_phys
+      tend%te_tnd  = 0._kind_phys
+      tend%tw_tnd  = 0._kind_phys
 
    end subroutine physics_tend_init
 

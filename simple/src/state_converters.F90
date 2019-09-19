@@ -60,60 +60,7 @@ CONTAINS
   end subroutine safe_set
 
 !> \section arg_table_temp_to_potential_temp_run  Argument Table
-!! [ ncol ]
-!!   standard_name = horizontal_loop_extent
-!!   long_name = number of columns
-!!   units = 1
-!!   type = integer
-!!   dimensions = ()
-!!   intent = in
-!! [ nz ]
-!!   standard_name = vertical_layer_dimension
-!!   long_name = number of vertical levels
-!!   units = 1
-!!   type = integer
-!!   dimensions = ()
-!!   intent = in
-!! [ temp ]
-!!   standard_name = temperature
-!!   state_variable = true
-!!   units = K
-!!   type = real | kind = kind_phys
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = in
-!! [ exner ]
-!!   standard_name = inverse_exner_function_wrt_surface_pressure
-!!   long_name = inverse exner function w.r.t. surface pressure, (ps/p)^(R/cp)
-!!   state_variable = true
-!!   units = 1
-!!   type = real | kind = kind_phys
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = in
-!! [ theta ]
-!!   standard_name = potential_temperature
-!!   long_name = potential temperature
-!!   units = K
-!!   type = real | kind = kind_phys
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = out
-!!   persistence = timestep
-!! [ errmsg ]
-!!   standard_name = ccpp_error_message
-!!   long_name = Error message for error handling in CCPP
-!!   units = 1
-!!   type = character | kind = len=512
-!!   dimensions = ()
-!!   intent = out
-!!   optional = F
-!! [ errflg ]
-!!   standard_name = ccpp_error_flag
-!!   long_name = Error flag for error handling in CCPP
-!!   units = flag
-!!   type = integer
-!!   dimensions = ()
-!!   intent = out
-!!   optional = F
-!!
+!! \htmlinclude temp_to_potential_temp_run.html
   subroutine temp_to_potential_temp_run(ncol, nz, temp, exner, theta, errmsg, errflg)
     ! Dummy arguments
     integer,          intent(in)  :: ncol       ! Number of columns
@@ -134,57 +81,7 @@ CONTAINS
   end subroutine temp_to_potential_temp_run
 
 !> \section arg_table_potential_temp_to_temp_run  Argument Table
-!! [ ncol ]
-!!   standard_name = horizontal_loop_extent
-!!   long_name = number of columns
-!!   units = 1
-!!   type = integer
-!!   dimensions = ()
-!!   intent = in
-!! [ nz ]
-!!   standard_name = vertical_layer_dimension
-!!   long_name = number of vertical levels
-!!   units = 1
-!!   type = integer
-!!   dimensions = ()
-!!   intent = in
-!! [ theta ]
-!!   standard_name = potential_temperature
-!!   long_name = potential temperature
-!!   units = K
-!!   type = real | kind = kind_phys
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = in
-!! [ exner ]
-!!   standard_name = inverse_exner_function_wrt_surface_pressure
-!!   long_name = inverse exner function w.r.t. surface pressure, (ps/p)^(R/cp)
-!!   state_variable = true
-!!   units = 1
-!!   type = real | kind = kind_phys
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = in
-!! [ temp ]
-!!   standard_name = temperature
-!!   state_variable = true
-!!   units = K
-!!   type = real | kind = kind_phys
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = out
-!! [ errmsg ]
-!!   standard_name = ccpp_error_message
-!!   long_name = Error message for error handling in CCPP
-!!   units = 1
-!!   dimensions = ()
-!!   type = character | kind = len=512
-!!   intent = out
-!! [ errflg ]
-!!   standard_name = ccpp_error_flag
-!!   long_name = Error flag for error handling in CCPP
-!!   units = flag
-!!   type = integer
-!!   dimensions = ()
-!!   intent = out
-!!
+!! \htmlinclude potential_temp_to_temp_run.html
   subroutine potential_temp_to_temp_run(ncol, nz, theta, exner, temp, errmsg, errflg)
     ! Dummy arguments
     integer,          intent(in)  :: ncol       ! Number of columns
@@ -205,36 +102,7 @@ CONTAINS
   end subroutine potential_temp_to_temp_run
 
 !> \section arg_table_pres_to_density_dry_init  Argument Table
-!! [ cpair ]
-!!   standard_name = specific_heat_of_dry_air_at_constant_pressure
-!!   units = J kg-1 K-1
-!!   dimensions = ()
-!!   type = real | kind = kind_phys
-!!   intent = in
-!! [ rair ]
-!!   standard_name = gas_constant_dry_air
-!!   long_name = long_name="ideal gas constant for dry air
-!!   units = J kg-1 K-1
-!!   dimensions = ()
-!!   type = real | kind = kind_phys
-!!   intent = in
-!! [ errmsg ]
-!!    standard_name = ccpp_error_message
-!!    long_name = Error message for error handling in CCPP
-!!    units = 1
-!!    dimensions = ()
-!!    type = character | kind = len=512
-!!    intent = out
-!!    optional = F
-!! [ errflg ]
-!!    standard_name = ccpp_error_flag
-!!    long_name = Error flag for error handling in CCPP
-!!    units = flag
-!!    dimensions = ()
-!!    type = integer
-!!    intent = out
-!!    optional = F
-!!
+!! \htmlinclude res_to_density_dry_init.html
   subroutine pres_to_density_dry_init(cpair, rair, errmsg, errflg)
     real(kind_phys),  intent(in)  :: rair  ! gas constant for dry air
     real(kind_phys),  intent(in)  :: cpair ! heat capacity at constant pressure
@@ -254,61 +122,7 @@ CONTAINS
   end subroutine pres_to_density_dry_init
 
 !> \section arg_table_pres_to_density_dry_run  Argument Table
-!! [ ncol ]
-!!   standard_name = horizontal_loop_extent
-!!   long_name = number of columns
-!!   units = 1
-!!   dimensions = ()
-!!   type = integer
-!!   intent = in
-!!   optional = F
-!! [ nz ]
-!!   standard_name = vertical_layer_dimension
-!!   long_name = number of vertical levels
-!!   units = 1
-!!   dimensions = ()
-!!   type = integer
-!!   intent = in
-!!   optional = F
-!! [ pmiddry ]
-!!   standard_name = air_pressure_of_dry_air
-!!   long_name = Dry midpoint pressure
-!!   state_variable = true
-!!   type = real | kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = in
-!! [ temp ]
-!!   standard_name = temperature
-!!   state_variable = true
-!!   units = K
-!!   type = real | kind = kind_phys
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = in
-!! [ rho ]
-!!    standard_name = dry_air_density
-!!    long_name = dry air density
-!!    units = kg/m^3
-!!    dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!    type = real | kind = kind_phys
-!!    intent = out
-!! [ errmsg ]
-!!    standard_name = ccpp_error_message
-!!    long_name = Error message for error handling in CCPP
-!!    units = 1
-!!    dimensions = ()
-!!    type = character | kind = len=512
-!!    intent = out
-!!    optional = F
-!! [ errflg ]
-!!    standard_name = ccpp_error_flag
-!!    long_name = Error flag for error handling in CCPP
-!!    units = flag
-!!    dimensions = ()
-!!    type = integer
-!!    intent = out
-!!    optional = F
-!!
+!! \htmlinclude pres_to_density_dry_run.html
   subroutine pres_to_density_dry_run(ncol, nz, pmiddry, temp, rho, errmsg, errflg)
     integer,          intent(in)    :: ncol      ! Number of columns
     integer,          intent(in)    :: nz        ! Number of vertical levels
@@ -331,23 +145,7 @@ CONTAINS
   end subroutine pres_to_density_dry_run
 
 !> \section arg_table_calc_exner_init  Argument Table
-!! [ errmsg ]
-!!    standard_name = ccpp_error_message
-!!    long_name = Error message for error handling in CCPP
-!!    units = 1
-!!    dimensions = ()
-!!    type = character | kind = len=512
-!!    intent = out
-!!    optional = F
-!! [ errflg ]
-!!    standard_name = ccpp_error_flag
-!!    long_name = Error flag for error handling in CCPP
-!!    units = flag
-!!    dimensions = ()
-!!    type = integer
-!!    intent = out
-!!    optional = F
-!!
+!! \htmlinclude calc_exner_init.html
   subroutine calc_exner_init(errmsg, errflg)
 
     character(len=*), intent(out) :: errmsg
@@ -359,66 +157,7 @@ CONTAINS
   end subroutine calc_exner_init
 
 !> \section arg_table_calc_exner_run  Argument Table
-!! [ ncol ]
-!!   standard_name = horizontal_loop_extent
-!!   long_name = number of columns
-!!   units = 1
-!!   type = integer
-!!   dimensions = ()
-!!   intent = in
-!! [ nz ]
-!!   standard_name = vertical_layer_dimension
-!!   long_name = number of vertical levels
-!!   units = 1
-!!   type = integer
-!!   dimensions = ()
-!!   intent = in
-!! [ cpair ]
-!!   standard_name = specific_heat_of_dry_air_at_constant_pressure
-!!   units = J kg-1 K-1
-!!   dimensions = ()
-!!   type = real | kind = kind_phys
-!!   intent = in
-!! [ rair ]
-!!   standard_name = gas_constant_dry_air
-!!   long_name = long_name="ideal gas constant for dry air
-!!   units = J kg-1 K-1
-!!   dimensions = ()
-!!   type = real | kind = kind_phys
-!!   intent = in
-!! [ pmid ]
-!!   standard_name = air_pressure
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = in
-!! [ exner ]
-!!   standard_name = inverse_exner_function_wrt_surface_pressure
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = 1
-!!   dimensions = (horizontal_loop_extent, vertical_layer_dimension)
-!!   intent = out
-!! [ errmsg ]
-!!    standard_name = ccpp_error_message
-!!    long_name = Error message for error handling in CCPP
-!!    units = 1
-!!    dimensions = ()
-!!    type = character | kind = len=512
-!!    intent = out
-!!    optional = F
-!! [ errflg ]
-!!    standard_name = ccpp_error_flag
-!!    long_name = Error flag for error handling in CCPP
-!!    units = flag
-!!    dimensions = ()
-!!    type = integer
-!!    intent = out
-!!    optional = F
-!!
+!! \htmlinclude calc_exner_run.html
   subroutine calc_exner_run(ncol, nz, cpair, rair, pmid, exner, errmsg, errflg)
 
     integer,          intent(in)  :: ncol       ! Number of columns
@@ -442,76 +181,7 @@ CONTAINS
   end subroutine calc_exner_run
 
 !> \section arg_table_wet_to_dry_run  Argument Table
-!! [ ncol ]
-!!   standard_name = horizontal_loop_extent
-!!   units = 1
-!!   dimensions = ()
-!!   type = integer
-!!   intent = in
-!! [ nz ]
-!!   standard_name = vertical_layer_dimension
-!!   long_name = number of vertical levels
-!!   units = 1
-!!   dimensions = ()
-!!   type = integer
-!!   intent = in
-!! [ pdel ]
-!!   standard_name = pressure_thickness
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   intent = in
-!! [ pdeldry ]
-!!   standard_name = pressure_thickness_of_dry_air
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   intent = in
-!! [ qv ]
-!!   standard_name = water_vapor_specific_humidity
-!!   long_name = water vapor
-!!   units = kg kg-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   type = real
-!!   kind = kind_phys
-!!   intent = inout
-!! [ qc ]
-!!   standard_name = cloud_liquid_water_mixing_ratio
-!!   units = kg kg-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   type = real
-!!   kind = kind_phys
-!!   intent = inout
-!!   optional = T
-!! [ qr ]
-!!   standard_name = rain_water_mixing_ratio
-!!   units = gm/gm
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   type = real
-!!   kind = kind_phys
-!!   intent = inout
-!!   optional = T
-!! [ errmsg ]
-!!    standard_name = ccpp_error_message
-!!    long_name = Error message for error handling in CCPP
-!!    units = 1
-!!    dimensions = ()
-!!    type = character | kind = len=512
-!!    intent = out
-!! [ errflg ]
-!!    standard_name = ccpp_error_flag
-!!    long_name = Error flag for error handling in CCPP
-!!    units = flag
-!!    dimensions = ()
-!!    type = integer
-!!    intent = out
-!!    optional = F
-!!
-
+!! \htmlinclude wet_to_dry_run.html
   subroutine wet_to_dry_run(ncol, nz, pdel, pdeldry, qv, qc, qr, errmsg, errflg)
 
      integer, intent(in)     :: ncol
@@ -541,75 +211,7 @@ CONTAINS
   end subroutine wet_to_dry_run
 
 !> \section arg_table_dry_to_wet_run  Argument Table
-!! [ ncol ]
-!!   standard_name = horizontal_loop_extent
-!!   units = 1
-!!   dimensions = ()
-!!   type = integer
-!!   intent = in
-!! [ nz ]
-!!   standard_name = vertical_layer_dimension
-!!   long_name = number of vertical levels
-!!   units = 1
-!!   dimensions = ()
-!!   type = integer
-!!   intent = in
-!! [ pdel ]
-!!   standard_name = pressure_thickness
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   intent = in
-!! [ pdeldry ]
-!!   standard_name = pressure_thickness_of_dry_air
-!!   state_variable = true
-!!   type = real
-!!   kind = kind_phys
-!!   units = Pa
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   intent = in
-!! [ qv ]
-!!   standard_name = water_vapor_specific_humidity
-!!   long_name = water vapor
-!!   units = kg kg-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   type = real
-!!   kind = kind_phys
-!!   intent = inout
-!! [ qc ]
-!!   standard_name = cloud_liquid_water_mixing_ratio
-!!   units = kg kg-1
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   type = real
-!!   kind = kind_phys
-!!   intent = inout
-!!   optional = T
-!! [ qr ]
-!!   standard_name = rain_water_mixing_ratio
-!!   units = gm/gm
-!!   dimensions = (horizontal_dimension, vertical_layer_dimension)
-!!   type = real
-!!   kind = kind_phys
-!!   intent = inout
-!!   optional = T
-!! [ errmsg ]
-!!    standard_name = ccpp_error_message
-!!    long_name = Error message for error handling in CCPP
-!!    units = 1
-!!    dimensions = ()
-!!    type = character | kind = len=512
-!!    intent = out
-!! [ errflg ]
-!!    standard_name = ccpp_error_flag
-!!    long_name = Error flag for error handling in CCPP
-!!    units = flag
-!!    dimensions = ()
-!!    type = integer
-!!    intent = out
-!!
-
+!! \htmlinclude dry_to_wet_run.html
   subroutine dry_to_wet_run(ncol, nz, pdel, pdeldry, qv, qc, qr, errmsg, errflg)
 
      integer, intent(in)     :: ncol

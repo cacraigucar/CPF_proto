@@ -1,0 +1,23 @@
+[ccpp-arg-table]
+  name = constituents
+  type = module
+[ pcnst ]
+  standard_name = number_of_tracers
+  type = integer
+  units = count
+  dimensions = ()
+[ ix_qv ]
+  standard_name = index_of_water_vapor_specific_humidity
+  type = integer
+  units = count
+  dimensions = ()
+[ ix_qc ]
+  standard_name = index_of_cloud_liquid_water_mixing_ratio
+  type = integer
+  units=count
+  dimensions = ()
+[ ix_qr ]
+  standard_name = index_of_rain_water_mixing_ratio
+  type = integer
+  units = count
+  dimensions = ()

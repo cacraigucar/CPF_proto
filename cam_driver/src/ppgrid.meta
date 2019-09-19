@@ -1,0 +1,18 @@
+[ccpp-arg-table]
+  name = ppgrid
+  type = module
+[ pcols ]
+  standard_name = horizontal_dimension
+  type = integer
+  units = count
+  dimensions = ()
+[ pver ]
+  standard_name = vertical_layer_dimension
+  type=integer 
+  units=count
+  dimensions = ()
+[ pverp ]
+  standard_name = vertical_level_dimension
+  type = integer
+  units=count
+  dimensions = ()

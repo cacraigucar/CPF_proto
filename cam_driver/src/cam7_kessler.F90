@@ -1,4 +1,4 @@
-module cam_kessler_main
+module cam7_kessler_mod
 
   use machine, only: kind_phys
 
@@ -7,10 +7,16 @@ module cam_kessler_main
 
 contains
 
-  subroutine cam_kessler_main_sub()
+  !> \section arg_table_cam7_kessler_sub  Argument Table
+  !! \htmlinclude arg_table_cam7_kessler_sub.html
+
+  subroutine cam7_kessler_sub()
 
     use ppgrid,           only: pcols, pver, pverp, pcnst
-    use physics_types,    only: state, tend, physics_state, physics_type_alloc
+    use physics_ddt,      only: physics_state
+    use physics_types,    only: state, tend, physics_type_alloc
+    use constituents,     only: pcnst, ix_qv, ix_qc, ix_qr
+
     use CAM_ccpp_cap,     only: CAM_ccpp_physics_initialize
     use CAM_ccpp_cap,     only: CAM_ccpp_physics_timestep_initial
     use CAM_ccpp_cap,     only: CAM_ccpp_physics_run
@@ -115,7 +121,7 @@ contains
        end do
 
        ! Initialize the timestep
-       call CAM_ccpp_physics_timestep_initial('cam_kessler_test', precl, errmsg, errflg)
+       call CAM_ccpp_physics_timestep_initial('cam_kessler_test', col_start, col_end, ncol, state, tend, precl, errmsg, errflg)
        col_start = 1
        col_end = ncol
 
@@ -125,7 +131,7 @@ contains
          tend%dtdt(:ncol,rk)     = ttend_top2bot(:ncol,k)
        end do
 
-       call CAM_ccpp_physics_run('cam_kessler_test', 'physics', col_start, col_end, precl, errmsg, errflg)
+       call CAM_ccpp_physics_run('cam_kessler_test', 'physics', col_start, col_end, ncol, state, tend, precl, errmsg, errflg)
        if (errflg /= 0) then
           write(6, *) trim(errmsg)
           call ccpp_physics_suite_part_list('cam_kessler_test', part_names, errmsg, errflg)
@@ -139,7 +145,7 @@ contains
        write(6,*) 'At time step', j, 'in host model Temperature =', state%T(8, :pver)
 
 
-       call CAM_ccpp_physics_timestep_final('cam_kessler_test', precl, errmsg, errflg)
+       call CAM_ccpp_physics_timestep_final('cam_kessler_test', col_start, col_end, ncol, state, tend, precl, errmsg, errflg)
 
          write(61,'(a10,i4)') 'nstep=',nstep
          write(61,'(a20,2i4,f20.13)') 'ncol, pver, ztodt=',ncol, pver, ztodt
@@ -176,15 +182,15 @@ contains
        stop
     end if
 
-  end subroutine cam_kessler_main_sub
+  end subroutine cam7_kessler_sub
 
-end module cam_kessler_main
+end module cam7_kessler_mod
 
 !> \brief Main SCM program that calls the main SCM subroutine
 !!
 !! The Doxygen documentation system cannot handle in-body comments in Fortran main programs, so the "main" program was put in the
 !! subroutine \ref cam_kessler_main_sub above.
-program cam_kessler
+program cam7_kessler
   use cam_kessler_main, only: cam_kessler_main_sub
-  call cam_kessler_main_sub()
-end program cam_kessler
+  call cam7_kessler_sub()
+end program cam7_kessler

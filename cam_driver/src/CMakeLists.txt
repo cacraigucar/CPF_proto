@@ -1,35 +1,62 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-PROJECT(cam_kessler)
+PROJECT(cam7_kessler)
 ENABLE_LANGUAGE(Fortran)
 
 include(CMakeForceCompiler)
 
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
+SET(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} $ENV{NETCDF})
 
-# Set the default CAM model to be CAM7
-SET(CAM_VERSION "CAM7" CACHE STRING "CAM model version (default: 'CAM7')")
-string(TOLOWER "${CAM_VERSION}" CAM_VERSTRING)
+#-----------------------------------------------------------------------------
+#
+# Create list of SCHEME_FILES, HOST_FILES, and SUITE_FILES
+# Paths should be relative to CMAKE_SOURCE_DIR (this file's directory)
+#
+#-----------------------------------------------------------------------------
+
+#NOTE -- FILES WITH DDTs MUST APPEAR BEFORE THEY ARE USED
+
+LIST(APPEND DDT_FILES      "../src/cam7_ddt_files.txt" )
+LIST (APPEND SCHEME_FILES  ${DDT_FILES} "../../simple/src/simple_schemes.txt")
+LIST(APPEND HOST_FILES     "../src/physics_types_cam7" "../src/ppgrid" "../src/constituents" "../src/physconst" )
+#LIST(APPEND HOST_FILES     "../src/test_host_data" "../src/physics_ddt_cam7" "../src/ppgrid" "../src/constituents" "../src/physconst" )
+#LIST(APPEND HOST_FILES     "../src/test_host_data" "../src/ppgrid" "../src/constituents" "../src/physconst" )
+LIST(APPEND SUITE_FILES    "../suites/suite_cam_kessler_test_simple1.xml")
+LIST(APPEND UTILITY_FILES  " " )
+
+# HOST is the name of the executable we will build.
+SET(HOST "${CMAKE_PROJECT_NAME}")
+# HOST_PROGRAM is the name of the program source files (Fortran and metadata)
+SET(HOST_PROGRAM "../src/cam7_kessler")
+
+#-----------------------------------------------------------------------------
+#
+# Set where the CCPP Framework lives
+#
+#-----------------------------------------------------------------------------
+get_filename_component(kessler_ROOT "${CMAKE_SOURCE_DIR}" DIRECTORY)
+set(CCPP_ROOT "${kessler_ROOT}/../ccpp-framework")
+
+#-----------------------------------------------------------------------------
+##############################################################################
+#
+# End of project-specific input
+#
+##############################################################################
+#-----------------------------------------------------------------------------
+
 # By default, no verbose output
 SET(VERBOSITY 0 CACHE STRING "Verbosity level of output (default: 0)")
 # By default, generated caps go in ccpp subdir
 SET(CCPP_CAP_FILES "${CMAKE_BINARY_DIR}/ccpp" CACHE
   STRING "Location of CCPP-generated cap files")
 
-#MESSAGE("The NETCDF env. variable is $ENV{NETCDF}")
-SET(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} $ENV{NETCDF})
-
-get_filename_component(CAM_DRIVER "${CMAKE_SOURCE_DIR}" DIRECTORY)
-get_filename_component(CPF_ROOT ${CAM_DRIVER} DIRECTORY)
-SET(CAM_SRC        ${CAM_DRIVER}/src)
-SET(SUITES         ${CAM_DRIVER}/suites)
-SET(CCPP_FRAMEWORK ${CPF_ROOT}/ccpp-framework)
-SET(SIMPLE         ${CPF_ROOT}/simple)
-SET(SIMPLE_SRC     ${SIMPLE}/src)
+SET(CCPP_FRAMEWORK ${CCPP_ROOT}/scripts)
 
 # Use rpaths on MacOSX
 set(CMAKE_MACOSX_RPATH 1)
 
-#------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 # Set a default build type if none was specified
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     #message(STATUS "Setting build type to 'Debug' as none was specified.")
@@ -44,23 +71,7 @@ endif()
 
 ADD_COMPILE_OPTIONS(-O0)
 
-SET(kessler_source_files "${CAM_VERSTRING}_kessler.F90")
-
-SET(library_files
-#            shr_infnan_mod.F90
-            physconst.F90
-            physics_types_${CAM_VERSTRING}.F90
-            constituents.F90
-            ppgrid.F90
-            time_manager.F90
-)
-
-#this should call the custome FindNetCDF.cmake file in /src/cmake/modules and populate the NETCDF_INCLUDES and NETCDF_LIBRARIES variables with the appropriate values
-SET(NETCDF_F90 "YES")
-FIND_PACKAGE(NetCDF)
-
-INCLUDE_DIRECTORIES(${NETCDF_INCLUDES})
-
+ADD_EXECUTABLE(${HOST} ${HOST_PROGRAM}.F90)
 if (${CMAKE_Fortran_COMPILER_ID} MATCHES "GNU")
 #  gfortran
 #  MESSAGE("gfortran being used.")
@@ -71,7 +82,6 @@ if (${CMAKE_Fortran_COMPILER_ID} MATCHES "GNU")
   ADD_COMPILE_OPTIONS(-ggdb)
   ADD_COMPILE_OPTIONS(-ffree-line-length-none)
   ADD_COMPILE_OPTIONS(-cpp)
-  #set(f_flags -fcheck=all -fbacktrace -ffpe-trap=zero -finit-real=nan -ggdb -ffree-line-length-none -g -cpp)
 elseif (${CMAKE_Fortran_COMPILER_ID} MATCHES "Intel")
 #  ifort
 #  MESSAGE("ifort being used.")
@@ -81,7 +91,6 @@ elseif (${CMAKE_Fortran_COMPILER_ID} MATCHES "Intel")
   ADD_COMPILE_OPTIONS(-traceback)
   ADD_COMPILE_OPTIONS(-debug extended)
   ADD_COMPILE_OPTIONS(-fpp)
-  #set(f_flags -g -fpe0 -warn -traceback -debug extended -fpp)
 elseif (${CMAKE_Fortran_COMPILER_ID} MATCHES "PGI")
 #  pgf90
 #  MESSAGE("pgf90 being used.")
@@ -91,16 +100,15 @@ elseif (${CMAKE_Fortran_COMPILER_ID} MATCHES "PGI")
   ADD_COMPILE_OPTIONS(-Mfree)
   ADD_COMPILE_OPTIONS(-Mfptrap)
   ADD_COMPILE_OPTIONS(-Mpreprocess)
-  #set(f_flags -g -Mipa=noconst -traceback -Mfree -Mfptrap -Mpreprocess)
 else (${CMAKE_Fortran_COMPILER_ID} MATCHES "GNU")
   message (FATAL_ERROR "This program has only been compiled with gfortran, pgf90 and ifort. If another compiler is needed, the appropriate flags must be added in ${CMAKE_SOURCE_DIR}/CMakeLists.txt")
 endif (${CMAKE_Fortran_COMPILER_ID} MATCHES "GNU")
 
-#------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 # CMake Modules
 # Set the CMake module path
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../ccpp-framework/cmake")
-#------------------------------------------------------------------------------
+list(APPEND CMAKE_MODULE_PATH "${CCPP_FRAMEWORK}/cmake")
+#-----------------------------------------------------------------------------
 # Set OpenMP flags for C/C++/Fortran
 if (OPENMP)
   include(detect_openmp)
@@ -113,24 +121,67 @@ else(OPENMP)
   message (STATUS "Disable OpenMP support for C/C++/Fortran compiler")
 endif()
 
-add_library(library ${library_files})
+# Create metadata and source file lists
+#FOREACH (FILE ${UTILITY_FILES})
+#  FILE(STRINGS ${FILE} U_FILENAMES)
+#  LIST(APPEND UTILITY_FILENAMES ${U_FILENAMES})
+#ENDFOREACH(FILE)
+
+FOREACH (FILE ${SCHEME_FILES})
+  FILE(STRINGS ${FILE} FILENAMES)
+  LIST(APPEND SCHEME_FILENAMES ${FILENAMES})
+ENDFOREACH(FILE)
+string(REPLACE ";" "," SCHEME_METADATA "${SCHEME_FILES}")
+
+FOREACH(FILE ${SCHEME_FILENAMES})
+  # target_sources prefers absolute pathnames
+  string(REPLACE ".meta" ".F90" TEMP "${FILE}")
+  get_filename_component(ABS_PATH "${TEMP}" ABSOLUTE)
+  MESSAGE(STATUS "HOST " ${HOST} " ABS_PATH " ${ABS_PATH})
+  target_sources(${HOST} PUBLIC ${ABS_PATH})
+ENDFOREACH(FILE)
+
+FOREACH (FILE ${DDT_FILES})
+  FILE(STRINGS ${FILE} FILENAMES)
+  LIST(APPEND DDT_FILENAMES ${FILENAMES})
+ENDFOREACH(FILE)
+string(REPLACE ".meta" ";" DDT_FILENAMES "${DDT_FILENAMES}")
+
+LIST(APPEND DDT_HOST_FILES ${DDT_FILENAMES} ${HOST_FILES})
+
+FOREACH(FILE ${DDT_HOST_FILES})
+  LIST(APPEND DDT_HOST_METADATA "${FILE}.meta")
+  # target_sources prefers absolute pathnames
+  get_filename_component(ABS_PATH "${FILE}.F90" ABSOLUTE)
+  LIST(APPEND HOST_SOURCE   "${ABS_PATH}")
+ENDFOREACH(FILE)
+target_sources(${HOST} PUBLIC ${HOST_SOURCE})
+string(REPLACE ";" ".meta," DDT_HOST_METADATA "${DDT_HOST_FILES}")
+set(DDT_HOST_METADATA "${DDT_HOST_METADATA}.meta,${HOST_PROGRAM}.meta")
+
+string(REPLACE ";" "," SUITE_XML "${SUITE_FILES}")
 
 # Run ccpp_capgen
-set(CAPGEN_CMD "${CCPP_FRAMEWORK}/scripts/ccpp_capgen.py")
-set(MODEL_FILES "${CAM_VERSTRING}_ccpp_files.txt")
-list(APPEND CAPGEN_CMD "${CAM_SRC}/${MODEL_FILES}")
-list(APPEND CAPGEN_CMD "${SIMPLE_SRC}/simple_schemes.txt")
-list(APPEND CAPGEN_CMD "--sdf-pathlist")
-list(APPEND CAPGEN_CMD "${SUITES}/suite_cam_kessler_test_simple1.xml")
+set(CAPGEN_CMD "${CCPP_FRAMEWORK}/ccpp_capgen.py")
+list(APPEND CAPGEN_CMD "--host-files")
+list(APPEND CAPGEN_CMD "${DDT_HOST_METADATA}")
+list(APPEND CAPGEN_CMD "--scheme-files")
+list(APPEND CAPGEN_CMD "${SCHEME_METADATA}")
+list(APPEND CAPGEN_CMD "--suites")
+list(APPEND CAPGEN_CMD "${SUITE_XML}")
 list(APPEND CAPGEN_CMD "--output-root")
 list(APPEND CAPGEN_CMD "${CCPP_CAP_FILES}")
 list(APPEND CAPGEN_CMD "--generate-host-cap")
+list(APPEND CAPGEN_CMD "--host-name")
+list(APPEND CAPGEN_CMD "${HOST}")
+  list(APPEND CAPGEN_CMD "--verbose")
 while (VERBOSITY GREATER 0)
   list(APPEND CAPGEN_CMD "--verbose")
   MATH(EXPR VERBOSITY "${VERBOSITY} - 1")
 endwhile ()
-#MESSAGE(STATUS "capgen cmd: ${CAPGEN_CMD}")
-EXECUTE_PROCESS(COMMAND ${CAPGEN_CMD} WORKING_DIRECTORY ${CPF_ROOT}
+string(REPLACE ";" " " CAPGEN_STRING "${CAPGEN_CMD}")
+MESSAGE(STATUS "Running: ${CAPGEN_STRING}")
+EXECUTE_PROCESS(COMMAND ${CAPGEN_CMD} WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   OUTPUT_VARIABLE CAPGEN_OUT ERROR_VARIABLE CAPGEN_OUT RESULT_VARIABLE RES)
 MESSAGE(STATUS "${CAPGEN_OUT}")
 if (RES EQUAL 0)
@@ -141,18 +192,16 @@ endif(RES EQUAL 0)
 
 # Read the list of files from capfiles.txt and set to CCPP_CAPS
 file(STRINGS ${CCPP_CAP_FILES}/capfiles.txt CCPP_CAPS)
-add_library(caps ${CCPP_CAPS})
+target_sources(${HOST} PUBLIC ${CCPP_CAPS} ${UTILITY_FILENAMES})
+
+SET(NETCDF_F90 "YES")
+FIND_PACKAGE(NetCDF)
+
+INCLUDE_DIRECTORIES(${NETCDF_INCLUDES})
 INCLUDE_DIRECTORIES(${CCPP_CAP_FILES})
 
-ADD_SUBDIRECTORY(${SIMPLE} ${CMAKE_BINARY_DIR}/simple)
-INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/simple)
+TARGET_LINK_LIBRARIES(kessler ${NETCDF_LIBRARIES})
 
-ADD_DEPENDENCIES(library base)
-ADD_DEPENDENCIES(simple_cam library)
-ADD_DEPENDENCIES(caps simple_cam)
-
-ADD_EXECUTABLE(cam_kessler ${kessler_source_files})
-TARGET_LINK_LIBRARIES(cam_kessler caps simple_cam library base ${NETCDF_LIBRARIES})
-set_target_properties(cam_kessler PROPERTIES
-                               COMPILE_FLAGS "${CMAKE_Fortran_FLAGS}"
-                               LINK_FLAGS "${CMAKE_Fortran_FLAGS}")
+set_target_properties(${HOST} PROPERTIES
+                              COMPILE_FLAGS "${CMAKE_Fortran_FLAGS}"
+                              LINK_FLAGS "${CMAKE_Fortran_FLAGS}")
