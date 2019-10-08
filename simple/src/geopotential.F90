@@ -11,7 +11,7 @@ module geopotential
 ! Author: B.Boville, Feb 2001 from earlier code by Boville and S.J. Lin
 !---------------------------------------------------------------------------------
 
-  use machine, only: kind_phys
+  use ccpp_kinds, only: kind_phys
 
   implicit none
   private

@@ -1,10 +1,10 @@
 !-------------------------------------------------------------------------------
 !physics data types module
 !-------------------------------------------------------------------------------
-module physics_types
+module physics_types_cam7
 
 !    use physconst,    only: kind_phys
-   use machine, only: kind_phys
+   use ccpp_kinds, only: kind_phys
 
    use constituents, only: pcnst
 
@@ -633,4 +633,4 @@ contains
 
 !===============================================================================
 
-end module physics_types
+end module physics_types_cam7

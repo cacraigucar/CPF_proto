@@ -1,6 +1,6 @@
 module time_manager
 
-use machine, only: kind_phys
+use ccpp_kinds, only: kind_phys
 
 real(kind_phys) :: timestep=1800._kind_phys
 

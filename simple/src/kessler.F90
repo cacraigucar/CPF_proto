@@ -1,7 +1,7 @@
 module kessler
 
-!  use machine, only: r8 => kind_phys
-  use machine, only:  kind_phys
+!  use ccpp_kinds, only: r8 => kind_phys
+  use ccpp_kinds, only:  kind_phys
 
   implicit none
   private
@@ -10,7 +10,6 @@ module kessler
   public :: kessler_run ! Main routine
   public :: kessler_init ! init routine
   public :: kessler_timestep_init ! init timestep routine
-  public :: kessler_finalize ! finalize routine
 
   ! Private module data (constants set at initialization)
   real(kind_phys) :: rd    ! gas constant for dry air, J/(kgK)

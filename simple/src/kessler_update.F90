@@ -1,7 +1,7 @@
 module kessler_update
 
-! use machine, only: kind_phys => kind_phys
-use machine, only: kind_phys
+! use ccpp_kinds, only: kind_phys => kind_phys
+use ccpp_kinds, only: kind_phys
 use geopotential, only: geopotential_t
 
 implicit none

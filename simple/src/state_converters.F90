@@ -1,6 +1,6 @@
 module state_converters
 
-  use machine, only: kind_phys
+  use ccpp_kinds, only: kind_phys
 
   implicit none
   private
@@ -88,7 +88,7 @@ CONTAINS
     integer,          intent(in)  :: nz         ! Number of vertical levels
     real(kind_phys),         intent(in)  :: theta(:,:) ! potential temperature (K)
     real(kind_phys),         intent(in)  :: exner(:,:) ! inverse exner function
-    real(kind_phys),         intent(out) :: temp(:,:)  ! temperature (K)
+    real(kind_phys),         intent(inout) :: temp(:,:)  ! temperature (K)
     character(len=*), intent(out) :: errmsg
     integer,          intent(out) :: errflg
     ! Local variable

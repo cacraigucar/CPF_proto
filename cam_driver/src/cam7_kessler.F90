@@ -1,6 +1,6 @@
 module cam7_kessler_mod
 
-  use machine, only: kind_phys
+  use ccpp_kinds, only: kind_phys
 
   implicit none
 
@@ -12,16 +12,17 @@ contains
 
   subroutine cam7_kessler_sub()
 
-    use ppgrid,           only: pcols, pver, pverp, pcnst
-    use physics_ddt,      only: physics_state
+    use ppgrid,            only: pcols, pver, pverp
+    use physics_types_cam7,only: physics_state
+
     use physics_types,    only: state, tend, physics_type_alloc
     use constituents,     only: pcnst, ix_qv, ix_qc, ix_qr
 
-    use CAM_ccpp_cap,     only: CAM_ccpp_physics_initialize
-    use CAM_ccpp_cap,     only: CAM_ccpp_physics_timestep_initial
-    use CAM_ccpp_cap,     only: CAM_ccpp_physics_run
-    use CAM_ccpp_cap,     only: CAM_ccpp_physics_timestep_final
-    use CAM_ccpp_cap,     only: CAM_ccpp_physics_finalize
+    use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_initialize
+    use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_timestep_initial
+    use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_run
+    use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_timestep_final
+    use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_finalize
     use ccpp_physics_api, only: ccpp_physics_suite_list
     use ccpp_physics_api, only: ccpp_physics_suite_part_list
 

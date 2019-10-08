@@ -46,7 +46,7 @@ module shr_infnan_mod
 !     r4 => SHR_KIND_R4, &
 !     r8 => SHR_KIND_R8
 
-use machine, only: &
+use ccpp_kinds, only: &
      r4 => kind_io4, &
      r8 => kind_phys
 

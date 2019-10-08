@@ -4,7 +4,7 @@
 module physics_types
 
 !   use physconst,    only: r8
-  use machine, only: kind_phys
+  use ccpp_kinds, only: kind_phys
 
    use constituents, only: pcnst
 
