@@ -36,7 +36,7 @@
     kind = kind_phys
     units = m/s
     dimensions = ( horizontal_dimension )
-[ timestep ]
+[ ztodt ]
     standard_name = time_step_for_physics
     long_name = Model time step
     state_variable = false

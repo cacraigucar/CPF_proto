@@ -15,16 +15,16 @@ contains
     use ppgrid,            only: pcols, pver, pverp
     use physics_types_cam7,only: physics_state
 
-    use physics_types,    only: state, tend, physics_type_alloc
-    use constituents,     only: pcnst, ix_qv, ix_qc, ix_qr
+    use physics_types_cam7, only: state, tend, physics_type_alloc
+    use constituents,       only: pcnst, ix_qv, ix_qc, ix_qr
 
     use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_initialize
     use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_timestep_initial
     use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_run
     use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_timestep_final
     use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_finalize
-    use ccpp_physics_api, only: ccpp_physics_suite_list
-    use ccpp_physics_api, only: ccpp_physics_suite_part_list
+    use cam7_kessler_ccpp_cap,     only: ccpp_physics_suite_list
+    use cam7_kessler_ccpp_cap,     only: ccpp_physics_suite_part_list
 
     integer,            parameter   :: begchunk = 33 ! Not needed for CAM7
     integer,            parameter   :: endchunk = 33 ! Not needed for CAM7
@@ -62,7 +62,8 @@ contains
     call physics_type_alloc(state, tend, pcols)
 
     ! Use the suite information to setup the run
-    call CAM_ccpp_physics_initialize('cam_kessler_test', precl, errmsg, errflg)
+    call cam7_kessler_ccpp_physics_initialize('cam_kessler_test',  &
+           state, tend, precl, ztodt, errmsg, errflg)
     if (errflg /= 0) then
        write(6, *) trim(errmsg)
        stop
@@ -122,7 +123,10 @@ contains
        end do
 
        ! Initialize the timestep
-       call CAM_ccpp_physics_timestep_initial('cam_kessler_test', col_start, col_end, ncol, state, tend, precl, errmsg, errflg)
+!       call cam7_kessler_ccpp_physics_timestep_initial('cam_kessler_test', col_start, col_end, &
+!           ncol, state, tend, precl, ztodt, errmsg, errflg)
+       call cam7_kessler_ccpp_physics_timestep_initial('cam_kessler_test', &
+            state, tend, precl, ztodt, errmsg, errflg)
        col_start = 1
        col_end = ncol
 
@@ -132,7 +136,8 @@ contains
          tend%dtdt(:ncol,rk)     = ttend_top2bot(:ncol,k)
        end do
 
-       call CAM_ccpp_physics_run('cam_kessler_test', 'physics', col_start, col_end, ncol, state, tend, precl, errmsg, errflg)
+       call cam7_kessler_ccpp_physics_run('cam_kessler_test', 'physics', col_start, col_end, &
+           ncol, state, tend, precl, ztodt, errmsg, errflg)
        if (errflg /= 0) then
           write(6, *) trim(errmsg)
           call ccpp_physics_suite_part_list('cam_kessler_test', part_names, errmsg, errflg)
@@ -146,7 +151,8 @@ contains
        write(6,*) 'At time step', j, 'in host model Temperature =', state%T(8, :pver)
 
 
-       call CAM_ccpp_physics_timestep_final('cam_kessler_test', col_start, col_end, ncol, state, tend, precl, errmsg, errflg)
+       call cam7_kessler_ccpp_physics_timestep_final('cam_kessler_test', &
+           state, tend, precl, ztodt, errmsg, errflg)
 
          write(61,'(a10,i4)') 'nstep=',nstep
          write(61,'(a20,2i4,f20.13)') 'ncol, pver, ztodt=',ncol, pver, ztodt
@@ -172,11 +178,11 @@ contains
 
        nstep = nstep + 1
 
-
     end do
 
 
-    call CAM_ccpp_physics_finalize('cam_kessler_test', precl, errmsg, errflg)
+    call cam7_kessler_ccpp_physics_finalize('cam_kessler_test', &
+           state, tend, precl, ztodt, errmsg, errflg)
     if (errflg /= 0) then
        write(6, *) trim(errmsg)
        write(6,'(a)') 'An error occurred in ccpp_timestep_final, Exiting...'
@@ -192,6 +198,6 @@ end module cam7_kessler_mod
 !! The Doxygen documentation system cannot handle in-body comments in Fortran main programs, so the "main" program was put in the
 !! subroutine \ref cam_kessler_main_sub above.
 program cam7_kessler
-  use cam_kessler_main, only: cam_kessler_main_sub
+  use cam7_kessler_mod, only: cam7_kessler_sub
   call cam7_kessler_sub()
 end program cam7_kessler
