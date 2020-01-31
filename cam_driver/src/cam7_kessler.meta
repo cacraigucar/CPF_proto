@@ -30,7 +30,7 @@
     ddt_type = physics_tend
     dimensions = ()
 [ precl ]
-    standard_name = precipitation
+    standard_name = total_precipitation_at_surface
     state_variable = false
     type = real
     kind = kind_phys
@@ -71,7 +71,7 @@
   dimensions = ()
   type = logical
 [ rairv ]
-  standard_name = pressure_dependent_gas_constant_dry_air
+  standard_name = pressure_dependent_gas_constant_of_dry_air
   long_name = ideal gas constant for dry air
   kind = kind_phys
   units = J kg-1 K-1
