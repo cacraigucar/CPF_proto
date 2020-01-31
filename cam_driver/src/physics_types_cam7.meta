@@ -156,7 +156,7 @@
   state_variable = true
   type = real
   kind = kind_phys
-  units = pmid
+  units = ln(Pa)
   dimensions = (horizontal_dimension, vertical_layer_dimension)
 [ lnpmiddry ]
   standard_name = natural_log_of_air_pressure_of_dry_air
