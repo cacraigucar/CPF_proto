@@ -35,16 +35,9 @@
     units = kg m-3
     dimensions =()
 [ GRAVIT ]
-    standard_name = acceleration_of_gravity
+    standard_name = gravitational_acceleration
     long_name = gravity
     type = real
     kind = kind_phys
     units = m s-2
-    dimensions =()
-[ ZVIR ]
-    standard_name = ratio_of_dry_air_to_water_vapor_gas_constants_minus_one
-    long_name = (Rwv/Rdair) - 1.0
-    type = real
-    kind = kind_phys
-    units = count
     dimensions =()

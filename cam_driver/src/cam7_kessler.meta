@@ -44,6 +44,45 @@
     kind = kind_phys
     units = s
     dimensions = ()
+[ layer_srf ]
+  standard_name = index_of_bottom_vertical_layer
+  units = count
+  dimensions = ()
+  type = integer
+[ layer_toa ]
+  standard_name = index_of_top_vertical_layer
+  units = count
+  dimensions = ()
+  type = integer
+[ interface_surf ]
+  standard_name = index_of_bottom_vertical_interface
+  units = count
+  dimensions = ()
+  type = integer
+[ interface_toa ]
+  standard_name = index_of_top_vertical_interface
+  units = count
+  dimensions = ()
+  type = integer
+[ lagrang ]
+  standard_name = lagrangian_vertical_coordinate
+  long_name = flag indicating if vertical coordinate is lagrangian
+  units =
+  dimensions = ()
+  type = logical
+[ rairv ]
+  standard_name = pressure_dependent_gas_constant_dry_air
+  long_name = ideal gas constant for dry air
+  kind = kind_phys
+  units = J kg-1 K-1
+  dimensions =(horizontal_dimension,vertical_layer_dimension)
+  type = real
+[ zvirv ]
+  standard_name = pressure_dependent_ratio_of_dry_air_to_water_vapor_gas_constants_minus_one
+  units = -1
+  dimensions = (horizontal_loop_extent, vertical_layer_dimension)
+  type = real
+  kind = kind_phys
 [ errmsg ]
   standard_name = ccpp_error_message
   long_name = Error message for error handling in CCPP

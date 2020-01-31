@@ -17,6 +17,7 @@ contains
 
     use physics_types_cam7, only: state, tend, physics_type_alloc
     use constituents,       only: pcnst, ix_qv, ix_qc, ix_qr
+    use physconst,          only: rdair, gravit, zvir
 
     use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_initialize
     use cam7_kessler_ccpp_cap,     only: cam7_kessler_ccpp_physics_timestep_initial
@@ -31,10 +32,13 @@ contains
     integer,            parameter   :: ncols = 1
     integer,            parameter   :: ntimes = 3
 
+    logical                         :: lagrang = .true.
+
     integer                         :: i, j, k, rk
     integer                         :: ierr
     integer                         :: col_start, col_end
     integer                         :: ncol, nwrite, pver_in, nwrite_in, nstep
+    integer                         :: layer_srf, layer_toa, interface_surf, interface_toa
     real(kind_phys)                 :: ztodt
     real(kind_phys)                 :: precl(pcols)
     real(kind_phys)                 :: scratch(pcols,pver)
@@ -58,12 +62,26 @@ contains
     real(kind_phys)                 :: lnpmid_top2bot(pcols,pver)
     real(kind_phys)                 :: ttend_top2bot(pcols,pver)
 
+    real(kind_phys)                 :: rairv(pcols,pver)
+    real(kind_phys)                 :: zvirv(pcols,pver)
+
     ! Allocate the host variables
     call physics_type_alloc(state, tend, pcols)
 
+    ! Assign the surf and TOA indices
+    layer_srf = 1
+    layer_toa = 30
+    interface_surf = 1
+    interface_toa = 31
+
+    rairv(:,:) = rdair
+    zvirv(:,:) = zvir
+    
+
     ! Use the suite information to setup the run
-    call cam7_kessler_ccpp_physics_initialize('cam_kessler_test',  &
-           state, tend, precl, ztodt, errmsg, errflg)
+    call cam7_kessler_ccpp_physics_initialize('kessler_cam',   &
+           state, tend, precl, ztodt, &
+           layer_srf, layer_toa, interface_surf, interface_toa, lagrang, rairv, zvirv, errmsg, errflg)
     if (errflg /= 0) then
        write(6, *) trim(errmsg)
        stop
@@ -123,10 +141,9 @@ contains
        end do
 
        ! Initialize the timestep
-!       call cam7_kessler_ccpp_physics_timestep_initial('cam_kessler_test', col_start, col_end, &
-!           ncol, state, tend, precl, ztodt, errmsg, errflg)
-       call cam7_kessler_ccpp_physics_timestep_initial('cam_kessler_test', &
-            state, tend, precl, ztodt, errmsg, errflg)
+       call cam7_kessler_ccpp_physics_timestep_initial('kessler_cam',  &
+            state, tend, precl, ztodt, &
+           layer_srf, layer_toa, interface_surf, interface_toa, lagrang, rairv, zvirv, errmsg, errflg)
        col_start = 1
        col_end = ncol
 
@@ -136,11 +153,12 @@ contains
          tend%dtdt(:ncol,rk)     = ttend_top2bot(:ncol,k)
        end do
 
-       call cam7_kessler_ccpp_physics_run('cam_kessler_test', 'physics', col_start, col_end, &
-           ncol, state, tend, precl, ztodt, errmsg, errflg)
+       call cam7_kessler_ccpp_physics_run('kessler_cam', 'physics', col_start, col_end, &
+           ncol,  state, tend, precl, ztodt, &
+           layer_srf, layer_toa, interface_surf, interface_toa, lagrang, rairv, zvirv, errmsg, errflg)
        if (errflg /= 0) then
           write(6, *) trim(errmsg)
-          call ccpp_physics_suite_part_list('cam_kessler_test', part_names, errmsg, errflg)
+          call ccpp_physics_suite_part_list('kessler_cam', part_names, errmsg, errflg)
           write(6, *) 'Available suite parts are:'
           do nwrite = 1, size(part_names)
              write(6, *) trim(part_names(nwrite))
@@ -151,8 +169,9 @@ contains
        write(6,*) 'At time step', j, 'in host model Temperature =', state%T(8, :pver)
 
 
-       call cam7_kessler_ccpp_physics_timestep_final('cam_kessler_test', &
-           state, tend, precl, ztodt, errmsg, errflg)
+       call cam7_kessler_ccpp_physics_timestep_final('kessler_cam',  &
+           state, tend, precl, ztodt, &
+           layer_srf, layer_toa, interface_surf, interface_toa, lagrang, rairv, zvirv, errmsg, errflg)
 
          write(61,'(a10,i4)') 'nstep=',nstep
          write(61,'(a20,2i4,f20.13)') 'ncol, pver, ztodt=',ncol, pver, ztodt
@@ -181,8 +200,9 @@ contains
     end do
 
 
-    call cam7_kessler_ccpp_physics_finalize('cam_kessler_test', &
-           state, tend, precl, ztodt, errmsg, errflg)
+    call cam7_kessler_ccpp_physics_finalize('kessler_cam',  &
+           state, tend, precl, ztodt, &
+           layer_srf, layer_toa, interface_surf, interface_toa, lagrang, rairv, zvirv, errmsg, errflg)
     if (errflg /= 0) then
        write(6, *) trim(errmsg)
        write(6,'(a)') 'An error occurred in ccpp_timestep_final, Exiting...'

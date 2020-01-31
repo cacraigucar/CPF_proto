@@ -17,12 +17,10 @@ SET(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} $ENV{NETCDF})
 #NOTE -- FILES WITH DDTs MUST APPEAR BEFORE THEY ARE USED
 
 LIST(APPEND DDT_FILES      "../src/cam7_ddt_files.txt" )
-LIST (APPEND SCHEME_FILES  ${DDT_FILES} "../../simple/src/simple_schemes.txt")
-LIST(APPEND HOST_FILES     "../src/physics_types_cam7" "../src/ppgrid" "../src/constituents" "../src/physconst" )
-#LIST(APPEND HOST_FILES     "../src/test_host_data" "../src/physics_ddt_cam7" "../src/ppgrid" "../src/constituents" "../src/physconst" )
-#LIST(APPEND HOST_FILES     "../src/test_host_data" "../src/ppgrid" "../src/constituents" "../src/physconst" )
-LIST(APPEND SUITE_FILES    "../suites/suite_cam_kessler_test_simple1.xml")
-LIST(APPEND UTILITY_FILES  " " )
+LIST (APPEND SCHEME_FILES  ${DDT_FILES} "simple_schemes.txt" )
+LIST(APPEND HOST_FILES     "../src/constituents" "../src/physconst" "../src/ppgrid" )
+LIST(APPEND SUITE_FILES    "../../atmos_phys/suite_kessler.xml")
+LIST(APPEND UTILITY_FILES  "../../atmos_phys/geopotential_t.F90" )
 
 # HOST is the name of the executable we will build.
 SET(HOST "${CMAKE_PROJECT_NAME}")

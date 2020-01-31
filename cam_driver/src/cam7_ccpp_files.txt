@@ -1,3 +1,1 @@
-cam7_registry.xml
 physics_types_cam7.F90
-

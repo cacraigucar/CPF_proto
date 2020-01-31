@@ -1,4 +1,0 @@
-../../simple/src/state_converters.meta
-../../simple/src/kessler.meta
-../../simple/src/kessler_update.meta
-../../simple/src/geopotential.F90
