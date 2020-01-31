@@ -34,7 +34,7 @@
     state_variable = false
     type = real
     kind = kind_phys
-    units = m/s
+    units = m s-1
     dimensions = ( horizontal_dimension )
 [ ztodt ]
     standard_name = time_step_for_physics
