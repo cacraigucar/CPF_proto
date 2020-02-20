@@ -1,4 +1,4 @@
-../../atmos_phys/state_converters.meta
-../../atmos_phys/kessler.meta
-../../atmos_phys/kessler_update.meta
-../../atmos_phys/geopotential_t.meta
+../../atmos_phys/utilities/state_converters.meta
+../../atmos_phys/utilities/geopotential_t.meta
+../../atmos_phys/kessler/kessler.meta
+../../atmos_phys/kessler/kessler_update.meta

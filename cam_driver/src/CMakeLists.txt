@@ -20,7 +20,7 @@ LIST(APPEND DDT_FILES      "../src/cam7_ddt_files.txt" )
 LIST (APPEND SCHEME_FILES  ${DDT_FILES} "simple_schemes.txt" )
 LIST(APPEND HOST_FILES     "../src/constituents" "../src/physconst" "../src/ppgrid" )
 LIST(APPEND SUITE_FILES    "../../atmos_phys/suite_kessler.xml")
-LIST(APPEND UTILITY_FILES  "../../atmos_phys/geopotential_t.F90" )
+LIST(APPEND UTILITY_FILES  "../../atmos_phys/kessler/geopotential_t.F90" )
 
 # HOST is the name of the executable we will build.
 SET(HOST "${CMAKE_PROJECT_NAME}")
